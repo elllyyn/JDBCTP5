@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import visual.Visual;
+import visuel.Visuel;
 
 public class Utils {
 	public Properties userInfo;
@@ -56,20 +56,6 @@ public class Utils {
 			ex2.printStackTrace();
 			System.exit(1);
 		}
-	}
-
-	public static void main(String args[]) {
-		Utils.TP();
-		
-		
-	}
-	
-	public static void TP() {
-		//CreateBDD bdd = new CreateBDD();
-		//bdd.TP();
-		//lancer le visuel
-		Visual v = new Visual();
-		//v.print();
 	}
 
 }
