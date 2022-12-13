@@ -18,7 +18,7 @@ import modele.Materiel;
 
 public class MagasinDAO {
 
-private static Utils connection = new Utils("ellyn", "ellyn", "TP4JDBC", 0);
+private static Utils connection = new Utils("ellyn", "ellyn", "Entreprise", 0);
 	
 	public static Connection connection() {
 		return connection.c;
@@ -33,7 +33,7 @@ private static Utils connection = new Utils("ellyn", "ellyn", "TP4JDBC", 0);
 		Map<Materiel, Integer> contenu = new HashMap<Materiel, Integer>();
 		
 		try {
-			String sql = "SELECT * FROM ContenuMagasin c INNER JOIN Materiel m ON (NomMateriel) WHERE c.NomMagasin = ?;";
+			String sql = "SELECT * FROM ContenuMagasin c INNER JOIN Materiel m ON (NomMateriel) WHERE c.NomMag = ?;";
 			PreparedStatement pstmt = connection().prepareStatement(sql);
 			pstmt.setString(1, NomMag);
 			List<Categorie> listCat = new ArrayList<Categorie>();
@@ -61,7 +61,7 @@ private static Utils connection = new Utils("ellyn", "ellyn", "TP4JDBC", 0);
 	}
 	public static Categorie categorieDansListe(String cat, List<Categorie> listCat) {	
 		for(Categorie c : listCat) {
-			if(c.getNom().equals(cat)) {
+			if(c.getNom().equalsIgnoreCase(cat)) {
 				return c;
 			}
 		}
@@ -81,7 +81,7 @@ private static Utils connection = new Utils("ellyn", "ellyn", "TP4JDBC", 0);
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Magasin;");
 
 			while (rs.next()) {
-				if(rs.getString("NomMagasin").equals(magasin)) {
+				if(rs.getString("NomMagasin").equalsIgnoreCase(magasin)) {
 					return true;
 				}		
 			}

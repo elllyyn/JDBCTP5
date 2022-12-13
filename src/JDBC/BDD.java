@@ -33,8 +33,10 @@ public class BDD {
 				stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Materiel ("
 						+ "NomMateriel varchar(30),"
 						+ "NomCat varchar(30),"
+						+ "MaterielSubstitution varchar (30)"
 						+ "PRIMARY KEY (NomMateriel),"
-						+ "FOREIGN KEY (NomCat) REFERENCES Categorie(NomCategorie)"
+						+ "FOREIGN KEY (NomCat) REFERENCES Categorie(NomCategorie),"
+						+ "FOREIGN KEY (MaterielSubstitution) REFERENCES Materiel(NomMateriel)"
 						+ ");");
 				
 				stmt.executeUpdate("DROP TABLE IF EXISTS Magasin;");

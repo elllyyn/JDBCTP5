@@ -58,7 +58,7 @@ public class Visuel {
 		Map<Materiel, Integer>  contenuMagasin= null;
 		while(contenuMagasin == null) {
 			System.out.println("Donner le nom du Magasin : ");
-			String MonMag = sf.nextLine();
+			String MonMag = sf.next();
 			contenuMagasin = GestionMagasin.afficherContenuMagasin(MonMag);
 			if(contenuMagasin==null)
 				System.out.println("Ce magasin n'existe pas dans la base, recommencer");
