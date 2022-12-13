@@ -26,6 +26,9 @@ private static Utils connection = new Utils("ellyn", "ellyn", "TP4JDBC", 0);
 	}
 	public static Map<Materiel, Integer> contenu(String NomMag) {
 		
+		if(magasinExiste(NomMag)!=true) {
+			return null;
+		}
 		ResultSet r1 = null;
 		Map<Materiel, Integer> contenu = new HashMap<Materiel, Integer>();
 		

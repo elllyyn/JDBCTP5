@@ -12,6 +12,7 @@ import controleur.GestionMagasin;
 import controleur.GestionMateriel;
 import modele.Client;
 import modele.Composant;
+import modele.Magasin;
 import modele.Materiel;
 
 
@@ -54,7 +55,14 @@ public class Visuel {
 	}
 	
 	public static void afficherContenu() {
-		
+		Map<Materiel, Integer>  contenuMagasin= null;
+		while(contenuMagasin == null) {
+			System.out.println("Donner le nom du Magasin : ");
+			String MonMag = sf.nextLine();
+			contenuMagasin = GestionMagasin.afficherContenuMagasin(MonMag);
+			if(contenuMagasin==null)
+				System.out.println("Ce magasin n'existe pas dans la base, recommencer");
+		}
 	}
 	
 	public static void creerCmd() {
