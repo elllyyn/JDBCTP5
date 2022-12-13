@@ -2,8 +2,8 @@ package visuel;
 
 public class Visuel {
 
-	public Visuel() {
-		// TODO Auto-generated constructor stub
+	public static void main(String[] args) {
+		
 	}
 
 }
