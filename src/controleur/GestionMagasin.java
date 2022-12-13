@@ -6,9 +6,7 @@ import modele.Materiel;
 
 public class GestionMagasin {
 	
-	public static Map<Materiel, Integer> afficherContenu(){
-		return MagasinDAO.contenu();
+	public static Map<Materiel, Integer> afficherContenuMagasin(String NomMag){
+		return MagasinDAO.contenu(NomMag);
 	}
-
-
 }
