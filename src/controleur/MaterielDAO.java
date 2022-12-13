@@ -13,13 +13,7 @@ import modele.Composant;
 import modele.Magasin;
 import modele.Materiel;
 
-public class MaterielDAO {
-private static Utils connection = new Utils("ellyn", "ellyn", "Entreprise", 0);
-	
-	public static Connection connection() {
-		return connection.c;
-		
-	}
+public class MaterielDAO extends DAO{
 
 	public static Materiel materielexist(Materiel materiel, Magasin magasin) {
 		try {

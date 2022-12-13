@@ -8,12 +8,7 @@ import Utils.Utils;
 import modele.Composant;
 import modele.Magasin;
 
-public class ComposantDAO {
-	private static Utils connection = new Utils("ellyn", "ellyn", "Entreprise", 0);
-
-	public static Connection connection() {
-		return connection.c;
-	}
+public class ComposantDAO extends DAO{
 
 	public static Composant composantExist(Composant composant) {
 		try {

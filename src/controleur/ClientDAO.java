@@ -8,13 +8,8 @@ import Utils.Utils;
 import modele.Client;
 import modele.Magasin;
 
-public class ClientDAO {
-private static Utils connection = new Utils("ellyn", "ellyn", "Entreprise", 0);
-	
-	public static Connection connection() {
-		return connection.c;
-		
-	}
+public class ClientDAO extends DAO{
+
 	public static Client clientexist(Client client) {
 		try {
 			java.sql.Statement stmt = connection().createStatement();

@@ -16,14 +16,7 @@ import modele.Composant;
 import modele.Magasin;
 import modele.Materiel;
 
-public class MagasinDAO {
-
-private static Utils connection = new Utils("ellyn", "ellyn", "Entreprise", 0);
-	
-	public static Connection connection() {
-		return connection.c;
-		
-	}
+public class MagasinDAO extends DAO{
 	public static Map<Materiel, Integer> contenu(String NomMag) {
 		
 		if(magasinExiste(NomMag)!=true) {
