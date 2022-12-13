@@ -12,6 +12,8 @@ import java.util.Map.Entry;
 
 import Utils.Utils;
 import modele.Categorie;
+import modele.Composant;
+import modele.Magasin;
 import modele.Materiel;
 
 public class MagasinDAO {
@@ -69,6 +71,23 @@ private static Utils connection = new Utils("ellyn", "ellyn", "TP4JDBC", 0);
 			}
 		}
 		return null;
+	}
+	public static boolean magasinExiste(String magasin) {
+		try {
+			java.sql.Statement stmt = connection().createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Magasin;");
+
+			while (rs.next()) {
+				if(rs.getString("NomMagasin").equals(magasin)) {
+					return true;
+				}		
+			}
+			stmt.close();
+			rs.close();
+		} catch (SQLException e1) {			
+			e1.printStackTrace();
+		}
+		return false;
 	}
 
 }
