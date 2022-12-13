@@ -60,14 +60,14 @@ private static Utils connection = new Utils("ellyn", "ellyn", "Entreprise", 0);
 		ArrayList<Materiel> materiels = new ArrayList<Materiel>();
 		
 		try {
-			String sql = "SELECT * FROM ContenuMateriel WHERE NomComp = ?;";
+			String sql = "SELECT * FROM ContenuMateriel c INNER JOIN Materiel m ON (c.NomMat = m.NomMateriel) WHERE NomCom = ?;";
 			PreparedStatement pstmt;
 			pstmt = connection().prepareStatement(sql);
 			pstmt.setString(1, composant.getNom());
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				materiels.add(null);
+				materiels.add(new Materiel(rs.getString("c.NomMat"), new Categorie(rs.getString("m.NomCat"))));
 
 			}
 			rs.close();

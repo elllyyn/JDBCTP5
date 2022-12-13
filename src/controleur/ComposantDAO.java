@@ -18,10 +18,10 @@ public class ComposantDAO {
 	public static Composant composantExist(Composant composant) {
 		try {
 			java.sql.Statement stmt = connection().createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Client;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Composant;");
 
 			while (rs.next()) {
-				if (composant.getNom().equalsIgnoreCase(rs.getString("NomClient"))) {
+				if (composant.getNom().equalsIgnoreCase(rs.getString("NomComposant"))) {
 					return composant;
 				}
 
