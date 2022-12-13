@@ -1,10 +1,12 @@
 package visuel;
 
-import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import controleur.GestionClient;
 import controleur.GestionCommande;
+import controleur.GestionMagasin;
 import controleur.GestionMateriel;
 import modele.Client;
 import modele.Materiel;
@@ -53,17 +55,23 @@ public class Visuel {
 	}
 	
 	public static void creerCmd() {
-		System.out.println("Donner le nom du client : ");
-		String nomClient = sf.nextLine();
-		sf.nextLine();
-		Client client = GestionClient.clientexist(new Client(nomClient, null));
+		Client client= null;
+		while(client == null) {
+			System.out.println("Donner le nom du client : ");
+			String nomClient = sf.nextLine();
+			client = GestionClient.clientexist(new Client(nomClient, null));
+			if(client==null)
+				System.out.println("Ce client n'existe pas dans la base, recommencer");
+		}
+		client.getMagasin().setContenu(GestionMagasin.afficherContenu());
 		Boolean ajouter = true;
+		Map<Materiel, Integer> materiels = new HashMap<Materiel, Integer>();
 		while(ajouter) {
 			Materiel materiel = null;
 			while(materiel == null) {
 				System.out.println("Donner nom materiel : ");
 				String nomMat = sf.next();
-				materiel = GestionMateriel.materielexist(new Materiel(nomMat, null));
+				materiel = GestionMateriel.materielexist(new Materiel(nomMat, null), client.getMagasin());
 				if(materiel==null)
 					System.out.println("Ce materiel n'existe pas dans la magasin, recommencer");
 			}	
@@ -71,6 +79,7 @@ public class Visuel {
 			System.out.println("Donner le nombre à commander : ");
 			int nombreMateriel = sf.nextInt();
 			//seulmax + try catch
+			materiels.put(materiel,nombreMateriel);
 			System.out.println("Voulez ajouter un matériel à votre commande : true pour oui et false sinon ");
 			ajouter = sf.nextBoolean();
 		}
