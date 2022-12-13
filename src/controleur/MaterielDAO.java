@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import Utils.Utils;
 import modele.Categorie;
@@ -31,7 +32,7 @@ private static Utils connection = new Utils("ellyn", "ellyn", "Entreprise", 0);
 					String sql = "SELECT NomCom FROM ContenuMagasin m INNER JOIN ContenuMateriel c "
 							+ "ON(m.nomMat = c.nomMat AND m.NomMag= ? ) WHRERE m.nomMateriel = ?;";
 					PreparedStatement pstmt = connection().prepareStatement(sql);
-					pstmt.setString(2, magasin.getNom());
+					pstmt.setString(1, magasin.getNom());
 					pstmt.setString(2, materiel.getNom());
 					rs = pstmt.executeQuery();
 					ArrayList<Composant> composants = new ArrayList<>();
@@ -53,6 +54,29 @@ private static Utils connection = new Utils("ellyn", "ellyn", "Entreprise", 0);
 			e1.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static List<Materiel> materielAvecComposant(Composant composant){
+		ArrayList<Materiel> materiels = new ArrayList<Materiel>();
+		
+		try {
+			String sql = "SELECT * FROM ContenuMateriel WHERE NomComp = ?;";
+			PreparedStatement pstmt;
+			pstmt = connection().prepareStatement(sql);
+			pstmt.setString(1, composant.getNom());
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				materiels.add(null);
+
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return materiels;
 	}
 
 }

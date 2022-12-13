@@ -6,9 +6,11 @@ import java.util.Scanner;
 
 import controleur.GestionClient;
 import controleur.GestionCommande;
+import controleur.GestionComposant;
 import controleur.GestionMagasin;
 import controleur.GestionMateriel;
 import modele.Client;
+import modele.Composant;
 import modele.Materiel;
 
 
@@ -79,6 +81,7 @@ public class Visuel {
 			System.out.println("Donner le nombre à commander : ");
 			int nombreMateriel = sf.nextInt();
 			//seulmax + try catch
+			//et verif dispo
 			materiels.put(materiel,nombreMateriel);
 			System.out.println("Voulez ajouter un matériel à votre commande : true pour oui et false sinon ");
 			ajouter = sf.nextBoolean();
@@ -91,7 +94,14 @@ public class Visuel {
 	}
 	
 	public static void afficherMatAvecComposant() {
-		
+		Composant composant = null;
+		while(composant == null) {
+			System.out.println("Donner le nom du composant : ");
+			String nomComp = sf.next();
+			composant = GestionComposant.compexist(new Composant(nomComp));
+			if(composant ==null)
+				System.out.println("Ce materiel n'existe pas dans la magasin, recommencer");
+		}	
 	}
 
 }
