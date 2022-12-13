@@ -1,16 +1,25 @@
 package visuel;
 
+import java.sql.SQLException;
 import java.util.Scanner;
+
+import controleur.GestionClient;
+import controleur.GestionCommande;
+import controleur.GestionMateriel;
+import modele.Client;
+import modele.Materiel;
+
 
 
 public class Visuel {
-	Scanner sf;
+	private static Scanner sf;
 
-	public Visuel() {
-		sf = new Scanner(System.in);
+	public static void main(String[] args) {
+		Visuel.choix();
 	}
 
-	public void livre() {
+	public static void choix() {
+		sf = new Scanner(System.in);
 		System.out.println("Choisissez une action : " + '\n' 
 				+ "0 - afficher le contenu d'un magasin" + '\n'
 				+ "1 - creer une commande" + '\n' 
@@ -44,8 +53,28 @@ public class Visuel {
 	}
 	
 	public static void creerCmd() {
-		
-		
+		System.out.println("Donner le nom du client : ");
+		String nomClient = sf.nextLine();
+		sf.nextLine();
+		Client client = GestionClient.clientexist(new Client(nomClient, null));
+		Boolean ajouter = true;
+		while(ajouter) {
+			Materiel materiel = null;
+			while(materiel == null) {
+				System.out.println("Donner nom materiel : ");
+				String nomMat = sf.next();
+				materiel = GestionMateriel.materielexist(new Materiel(nomMat, null));
+				if(materiel==null)
+					System.out.println("Ce materiel n'existe pas dans la magasin, recommencer");
+			}	
+			
+			System.out.println("Donner le nombre à commander : ");
+			int nombreMateriel = sf.nextInt();
+			//seulmax + try catch
+			System.out.println("Voulez ajouter un matériel à votre commande : true pour oui et false sinon ");
+			ajouter = sf.nextBoolean();
+		}
+		GestionCommande.creerCmd();
 	}
 	
 	public static void quantiteMat() {
