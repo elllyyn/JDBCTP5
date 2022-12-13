@@ -1,6 +1,7 @@
 package visuel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -65,7 +66,7 @@ public class Visuel {
 			if(client==null)
 				System.out.println("Ce client n'existe pas dans la base, recommencer");
 		}
-		client.getMagasin().setContenu(GestionMagasin.afficherContenu());
+		client.getMagasin().setContenu(GestionMagasin.afficherContenuMagasin(client.getMagasin().getNom()));
 		Boolean ajouter = true;
 		Map<Materiel, Integer> materiels = new HashMap<Materiel, Integer>();
 		while(ajouter) {
@@ -101,7 +102,11 @@ public class Visuel {
 			composant = GestionComposant.compexist(new Composant(nomComp));
 			if(composant ==null)
 				System.out.println("Ce materiel n'existe pas dans la magasin, recommencer");
-		}	
+		}
+		List<Materiel> materiels = GestionMateriel.materielAvecComposant(composant);
+		for(Materiel m : materiels) {
+			System.out.println("Materiel : "+m.getNom()+" de la catégorie "+ m.getCategorie().getNom());
+		}
 	}
 
 }
