@@ -3,8 +3,8 @@ package visuel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 import controleur.GestionClient;
 import controleur.GestionCommande;
@@ -12,6 +12,7 @@ import controleur.GestionComposant;
 import controleur.GestionMagasin;
 import controleur.GestionMateriel;
 import modele.Client;
+import modele.Commande;
 import modele.Composant;
 import modele.Magasin;
 import modele.Materiel;
@@ -48,7 +49,7 @@ public class Visuel {
 			afficherMatAvecComposant();
 			break;
 		default:
-			System.out.println("Rien choisit !");
+			System.out.println("Rien choisi !");
 			break;
 		}
 		sf.close();
@@ -79,23 +80,62 @@ public class Visuel {
 	public static void creerCmd() {
 		Client client = connexionClient();
 		client.getMagasin().setContenu(GestionMagasin.afficherContenuMagasin(client.getMagasin().getNom()));
+		
+		Map<Materiel, Integer> materiels = faireCmd(client);
+		
+		Commande commande = new Commande(0, client, materiels);
+		GestionCommande.creerCmd(commande);
+	}
+	
+	public static Map<Materiel, Integer> faireCmd(Client client){
 		Boolean ajouter = true;
 		Map<Materiel, Integer> materiels = new HashMap<Materiel, Integer>();
+		// continue de demander des produits tant que l'on veut ajouter un produit
 		while(ajouter) {
+			//verification que le produit existe bien dans le magasin associé au client
 			Materiel materiel = choisirMat(client);	
+			int nombreMaterielDepart = 0;
+			// si dans la commande le produit a déjà été ajouté on récupère le nombre déjà récupéré
+			for(Entry<Materiel, Integer> m : materiels.entrySet()) {
+				if(m.getKey().getNom().equalsIgnoreCase(materiel.getNom()))
+					System.out.println("Vous avez déjà choisit ce produit, choisissez le nombre de produit à ajouter");
+				nombreMaterielDepart = m.getValue();		
+			}
 			
 			System.out.println("Donner le nombre à commander : ");
-			int nombreMateriel = sf.nextInt();
-			while(GestionClient.seuilMaxAtteint(client, materiel, nombreMateriel)) {
-				System.out.println("Le seuil maximal est dépassé, donner un nombre inférieur à commander : ");
-				nombreMateriel = sf.nextInt();
+			int nombreMateriel = nombreMaterielDepart + sf.nextInt();
+			int sub = 0;
+			//verification que le matériel et/ou son substitue est en stock
+			while(true) {
+				if(nombreMateriel < GestionMagasin.quantiteDansMagasin(client.getMagasin().getNom(), materiel.getNom())){
+					break;
+				}else {
+					sub = GestionMagasin.substitutionUtilisé(client.getMagasin().getNom(), materiel.getNom(), nombreMateriel);
+					if(sub ==-1) {
+						System.out.println("Il n'y a pas assez de produit, donner un nombre inférieur : ");
+						nombreMateriel = nombreMaterielDepart + sf.nextInt();
+					}else {
+						break;
+					}
+				}
 			}
-			//et verif dispo + substitution
-			materiels.put(materiel,nombreMateriel);
+			//verification que le seuil max du client pour la commande n'est pas dépassé
+			while(GestionClient.seuilMaxAtteint(client, materiels, materiel, nombreMateriel-nombreMaterielDepart)) {
+				System.out.println("Le seuil maximal est dépassé, donner un nombre inférieur à commander : ");
+				nombreMateriel = nombreMaterielDepart +sf.nextInt();
+			}
+			//mise à jour ou ajout du nombre de produit demandé
+			if(nombreMaterielDepart>0) {
+				for(Entry<Materiel, Integer> m : materiels.entrySet()) {
+					if(m.getKey().getNom().equalsIgnoreCase(materiel.getNom()))
+						materiels.put(m.getKey(), nombreMateriel);
+				}
+			}else
+				materiels.put(materiel,nombreMateriel);
 			System.out.println("Voulez-vous ajouter un autre matériel à votre commande ? true pour oui et false sinon ");
 			ajouter = sf.nextBoolean();
 		}
-		//GestionCommande.creerCmd();
+		return materiels;
 	}
 	
 	public static Client connexionClient() {
@@ -119,6 +159,7 @@ public class Visuel {
 			if(materiel==null)
 				System.out.println("Ce materiel n'existe pas dans la magasin, recommencer");
 		}
+		
 		return materiel;
 	}
 	

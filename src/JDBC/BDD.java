@@ -116,11 +116,11 @@ public class BDD {
 			stmt.executeUpdate("INSERT INTO Magasin(NomMagasin) VALUES "
 					+"('BricoDepot'),('LeRoyMerlin'),('LaChaiseLongue');");
 			stmt.executeUpdate("INSERT INTO Client(NomClient,NomMag) VALUES "
-					+"('Bob','LaChaiseLongue'),('Charlotte','LeRoyMerlin'),('Axel','LeRoyMerlin');");
+					+"('Bob','LaChaiseLongue'),('Charlotte','BricoDepot'),('Axel','LeRoyMerlin');");
 			stmt.executeUpdate("INSERT INTO Composant(NomComposant) VALUES "
 					+"('Bois'),('Plastique'),('Cire'),('Corde');");
 			stmt.executeUpdate("INSERT INTO ContenuMagasin(NomMag,NomMat,quantStock) VALUES "
-					+"('LaChaiseLongue','Bougie',40),('LaChaiseLongue','Bougie2',10),('BricoDepot','Plaque',4),('LeRoyMerlin','Mousse',30);");
+					+"('LaChaiseLongue','Bougie',40),('LaChaiseLongue','Bougie2',20),('BricoDepot','Plaque',4),('LeRoyMerlin','Mousse',30);");
 			stmt.executeUpdate("INSERT INTO Commande(NomCli) VALUES "
 					+"('Charlotte'),('Bob'),('Axel');");
 			stmt.executeUpdate("INSERT INTO ContenuCommande(IdCom,NomMat,quantCom) VALUES "

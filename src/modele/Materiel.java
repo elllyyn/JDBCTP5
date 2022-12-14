@@ -7,6 +7,7 @@ public class Materiel {
 	private String nom;
 	private Categorie categorie;
 	private List<Composant> composants;
+	private Materiel substitution;
 
 	public Materiel(String nom, Categorie categorie) {
 		this.nom = nom;
@@ -36,6 +37,14 @@ public class Materiel {
 
 	public void setComposants(List<Composant> composants) {
 		this.composants = composants;
+	}
+
+	public Materiel getSubstitution() {
+		return substitution;
+	}
+
+	public void setSubstitution(Materiel substitution) {
+		this.substitution = substitution;
 	}
 
 }

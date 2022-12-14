@@ -96,8 +96,46 @@ public class MagasinDAO extends DAO{
 			if(r1.next()) {
 				nbMat = r1.getInt("quantStock");
 			}
-			else {
-				nbMat = 0;
+			r1.close();
+			pstmt.close();
+		} catch (SQLException e1) {			
+			e1.printStackTrace();
+		}
+		return nbMat;
+	}
+	
+	public static int quantiteSubstitutionMateriel(String NomMag, String NomMat) {
+		ResultSet r1 = null;
+		int nbMat = 0;
+		
+		try {
+			String sql = "SELECT MaterielSubstitution FROM ContenuMagasin c INNER JOIN Materiel m ON (c.NomMat = m.NomMateriel) WHERE NomMag = ? AND NomMat = ?;";
+			PreparedStatement pstmt = connection().prepareStatement(sql);
+			pstmt.setString(1, NomMag);
+			pstmt.setString(2, NomMat);
+
+			r1 = pstmt.executeQuery();
+			String sub = null;
+			if(r1.next()) {
+				sub = r1.getString("MaterielSubstitution");
+			}
+			if(sub != null) {
+				
+				try {
+					sql = "SELECT quantStock FROM ContenuMagasin WHERE NomMag = ? AND NomMat = ?;";
+					pstmt = connection().prepareStatement(sql);
+					pstmt.setString(1, NomMag);
+					pstmt.setString(2, sub);
+
+					r1 = pstmt.executeQuery();
+					if(r1.next()) {
+						nbMat = r1.getInt("quantStock");
+					}
+					r1.close();
+					pstmt.close();
+				} catch (SQLException e1) {			
+					e1.printStackTrace();
+				}
 			}
 			r1.close();
 			pstmt.close();
