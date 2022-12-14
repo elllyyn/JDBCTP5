@@ -33,7 +33,7 @@ public class BDD {
 				stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Materiel ("
 						+ "NomMateriel varchar(30),"
 						+ "NomCat varchar(30),"
-						+ "MaterielSubstitution varchar (30)"
+						+ "MaterielSubstitution varchar(30),"
 						+ "PRIMARY KEY (NomMateriel),"
 						+ "FOREIGN KEY (NomCat) REFERENCES Categorie(NomCategorie),"
 						+ "FOREIGN KEY (MaterielSubstitution) REFERENCES Materiel(NomMateriel)"
@@ -111,24 +111,24 @@ public class BDD {
 		try {
 			stmt.executeUpdate("INSERT INTO Categorie(NomCategorie) VALUES "
 					+"('Isolation'),('Decoration');");
-			stmt.executeUpdate("INSERT INTO Materiel(NomMateriel,NomCat) VALUES "
-					+"('Plaque','Isolation'),('Bougie','Decoration'),('Mousse','Isolation');");
+			stmt.executeUpdate("INSERT INTO Materiel(NomMateriel,NomCat, MaterielSubstitution) VALUES "
+					+"('Plaque','Isolation',null),('Bougie2','Decoration',null),('Bougie','Decoration','Bougie2'),('Mousse','Isolation','Plaque');");
 			stmt.executeUpdate("INSERT INTO Magasin(NomMagasin) VALUES "
 					+"('BricoDepot'),('LeRoyMerlin'),('LaChaiseLongue');");
 			stmt.executeUpdate("INSERT INTO Client(NomClient,NomMag) VALUES "
-					+"('Bob','BricoDepot'),('Charlotte','BricoDepot'),('Axel','LaChaiseLongue');");
+					+"('Bob','LaChaiseLongue'),('Charlotte','LeRoyMerlin'),('Axel','LeRoyMerlin');");
 			stmt.executeUpdate("INSERT INTO Composant(NomComposant) VALUES "
 					+"('Bois'),('Plastique'),('Cire'),('Corde');");
 			stmt.executeUpdate("INSERT INTO ContenuMagasin(NomMag,NomMat,quantStock) VALUES "
-					+"('LaChaiseLongue','Bougie',40),('BricoDepot','Plaque',4),('LeRoyMerlin','Mousse',30);");
+					+"('LaChaiseLongue','Bougie',40),('LaChaiseLongue','Bougie2',10),('BricoDepot','Plaque',4),('LeRoyMerlin','Mousse',30);");
 			stmt.executeUpdate("INSERT INTO Commande(NomCli) VALUES "
 					+"('Charlotte'),('Bob'),('Axel');");
 			stmt.executeUpdate("INSERT INTO ContenuCommande(IdCom,NomMat,quantCom) VALUES "
 					+"(1,'Plaque',3),(2,'Plaque',1),(3,'Bougie',10);");
 			stmt.executeUpdate("INSERT INTO ContenuMateriel(NomCom,NomMat) VALUES "
-					+"('Bois','Plaque'),('Cire','Bougie'),('Corde','Bougie'),('Plastique','Mousse');");
+					+"('Bois','Plaque'),('Cire','Bougie'),('Corde','Bougie'),('Cire','Bougie2'),('Corde','Bougie2'),('Plastique','Mousse');");
 			stmt.executeUpdate("INSERT INTO SeuilMax(NomCli,NomCat,seuil) VALUES "
-					+"('Bob','Isolation',100),('Axel','Decoration',100),('Charlotte','Isolation',100);");
+					+"('Bob','Isolation',100),('Bob','Decoration',50),('Axel','Decoration',100),('Axel','Isolation',100),('Charlotte','Isolation',100),('Charlotte','Decoration',100);");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

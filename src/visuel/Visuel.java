@@ -77,40 +77,52 @@ public class Visuel {
 	}
 	
 	public static void creerCmd() {
-		Client client= null;
-		while(client == null) {
-			System.out.println("Donner le nom du client : ");
-			String nomClient = sf.nextLine();
-			client = GestionClient.clientexist(new Client(nomClient, null));
-			if(client==null)
-				System.out.println("Ce client n'existe pas dans la base, recommencer");
-		}
+		Client client = connexionClient();
 		client.getMagasin().setContenu(GestionMagasin.afficherContenuMagasin(client.getMagasin().getNom()));
 		Boolean ajouter = true;
 		Map<Materiel, Integer> materiels = new HashMap<Materiel, Integer>();
 		while(ajouter) {
-			Materiel materiel = null;
-			while(materiel == null) {
-				System.out.println("Donner nom materiel : ");
-				String nomMat = sf.next();
-				materiel = GestionMateriel.materielexist(new Materiel(nomMat, null), client.getMagasin());
-				if(materiel==null)
-					System.out.println("Ce materiel n'existe pas dans la magasin, recommencer");
-			}	
+			Materiel materiel = choisirMat(client);	
 			
 			System.out.println("Donner le nombre à commander : ");
 			int nombreMateriel = sf.nextInt();
-			//seulmax + try catch
-			//et verif dispo
+			while(GestionClient.seuilMaxAtteint(client, materiel, nombreMateriel)) {
+				System.out.println("Le seuil maximal est dépassé, donner un nombre inférieur à commander : ");
+				nombreMateriel = sf.nextInt();
+			}
+			//et verif dispo + substitution
 			materiels.put(materiel,nombreMateriel);
-			System.out.println("Voulez ajouter un matériel à votre commande : true pour oui et false sinon ");
+			System.out.println("Voulez-vous ajouter un autre matériel à votre commande ? true pour oui et false sinon ");
 			ajouter = sf.nextBoolean();
 		}
-		GestionCommande.creerCmd();
+		//GestionCommande.creerCmd();
+	}
+	
+	public static Client connexionClient() {
+		Client client= null;
+		while(client == null) {
+			System.out.println("Donner le nom du client : ");
+			String nomClient = sf.next();
+			client = GestionClient.clientexist(new Client(nomClient, null));
+			if(client==null)
+				System.out.println("Ce client n'existe pas dans la base, recommencer");
+		}
+		return client;
+	}
+	
+	public static Materiel choisirMat(Client client) {
+		Materiel materiel = null;
+		while(materiel == null) {
+			System.out.println("Donner nom materiel : ");
+			String nomMat = sf.next();
+			materiel = GestionMateriel.materielexist(new Materiel(nomMat, null), client.getMagasin());
+			if(materiel==null)
+				System.out.println("Ce materiel n'existe pas dans la magasin, recommencer");
+		}
+		return materiel;
 	}
 	
 	public static void quantiteMat() {
-		boolean rechercheValide = false;
 		String NomMag = " ";
 		String NomMat = " ";
 
