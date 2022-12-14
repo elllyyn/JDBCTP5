@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Map.Entry;
 
 import controleur.GestionClient;
 import controleur.GestionCommande;
@@ -63,6 +64,16 @@ public class Visuel {
 			if(contenuMagasin==null)
 				System.out.println("Ce magasin n'existe pas dans la base, recommencer");
 		}
+		System.out.print("Nom materiel :      ");
+		System.out.println("Quantité materiel :");
+
+		for(Entry<Materiel,Integer> e : contenuMagasin.entrySet()) {
+			String nomMat = e.getKey().getNom();
+			int nbMat = e.getValue();
+			System.out.print(nomMat);
+			System.out.print("      ");
+			System.out.println(nbMat);
+		}
 	}
 	
 	public static void creerCmd() {
@@ -99,7 +110,33 @@ public class Visuel {
 	}
 	
 	public static void quantiteMat() {
-		
+		boolean rechercheValide = false;
+		String NomMag = " ";
+		String NomMat = " ";
+
+		while(NomMag == " " ) {
+			System.out.println("Donner le nom du magasin : ");
+			String Mag = sf.next();
+			if(GestionMagasin.magasinExiste(Mag)!=true) {
+				System.out.println("Ce magasin n'existe pas.");
+			}else {
+				NomMag = Mag;
+			}
+		}
+		while(NomMat==" ") {
+			System.out.println("Donner le nom du materiel : ");
+			String Mat = sf.next();
+			Magasin magasin = new Magasin(NomMag);
+			Materiel materiel = new Materiel(Mat, null);
+			if(GestionMateriel.materielexist(materiel,magasin)==null) {
+				System.out.println("Ce materiel n'existe pas dans ce magasin.");
+			}
+			else {
+				NomMat = Mat;
+			}
+		}
+		int nbMat = GestionMagasin.quantiteDansMagasin(NomMag, NomMat);
+		System.out.println("La quantité de ce materiel dans ce magasin est de "+nbMat);
 	}
 	
 	public static void afficherMatAvecComposant() {

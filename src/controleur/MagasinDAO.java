@@ -1,6 +1,5 @@
 package controleur;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,10 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import Utils.Utils;
 import modele.Categorie;
-import modele.Composant;
-import modele.Magasin;
 import modele.Materiel;
 
 public class MagasinDAO extends DAO{
@@ -26,7 +22,7 @@ public class MagasinDAO extends DAO{
 		Map<Materiel, Integer> contenu = new HashMap<Materiel, Integer>();
 		
 		try {
-			String sql = "SELECT * FROM ContenuMagasin c INNER JOIN Materiel m ON (NomMateriel) WHERE c.NomMag = ?;";
+			String sql = "SELECT * FROM ContenuMagasin c INNER JOIN Materiel m ON (c.NomMat = m.NomMateriel) WHERE c.NomMag = ?;";
 			PreparedStatement pstmt = connection().prepareStatement(sql);
 			pstmt.setString(1, NomMag);
 			List<Categorie> listCat = new ArrayList<Categorie>();
@@ -40,7 +36,7 @@ public class MagasinDAO extends DAO{
 					c = new Categorie(NomCat);
 					listCat.add(c);
 				}
-				Materiel m = new Materiel(r1.getString("NomMat"), c);
+				Materiel m = new Materiel(NomMat, c);
 				int nbMat = r1.getInt("quantStock");
 				contenu.put(m, nbMat);
 			}
@@ -85,5 +81,29 @@ public class MagasinDAO extends DAO{
 		}
 		return false;
 	}
+	public static int quantiteMaterielDansMagasin(String NomMag, String NomMat) {
+		
+		ResultSet r1 = null;
+		int nbMat = 0;
+		
+		try {
+			String sql = "SELECT * FROM ContenuMagasin WHERE NomMag = ? AND NomMat = ?;";
+			PreparedStatement pstmt = connection().prepareStatement(sql);
+			pstmt.setString(1, NomMag);
+			pstmt.setString(2, NomMat);
 
+			r1 = pstmt.executeQuery();
+			if(r1.next()) {
+				nbMat = r1.getInt("quantStock");
+			}
+			else {
+				nbMat = 0;
+			}
+			r1.close();
+			pstmt.close();
+		} catch (SQLException e1) {			
+			e1.printStackTrace();
+		}
+		return nbMat;
+	}
 }
