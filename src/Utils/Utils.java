@@ -15,7 +15,13 @@ public class Utils {
 	private String user;
 	private String password;
 	private String database;
-
+	/**
+	 * permet de se connecter à une base de données et crée la base de données si create est à 1
+	 * @param user
+	 * @param password
+	 * @param database
+	 * @param create
+	 */
 	public Utils(String user, String password, String database, int create) {
 		this.user = user;
 		this.password = password;
@@ -41,7 +47,9 @@ public class Utils {
 		
 
 	}
-	
+	/**
+	 * supprime la base de données si elle existe puis la recréée
+	 */
 	public void createBDD() {
 		
 		try {
