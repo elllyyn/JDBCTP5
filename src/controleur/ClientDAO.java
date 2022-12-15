@@ -24,7 +24,7 @@ public class ClientDAO extends DAO {
 
 			while (rs.next()) {
 				if (client.getNom().equalsIgnoreCase(rs.getString("NomClient"))) {
-					client.setMagasin(new Magasin(rs.getString("NomMag")));
+					client.setMagasin(new Magasin(rs.getString("NomMagasin")));
 					return client;
 				}
 
@@ -44,7 +44,7 @@ public class ClientDAO extends DAO {
 	 * @return seuilMax
 	 */
 	public static int seuilMax(Client client, Map<Materiel,Integer> materiels, Materiel materiel) {
-		String sql = "SELECT seuil FROM seuilMax s WHERE NomCat = ? AND NomCli = ?;";
+		String sql = "SELECT seuil FROM seuilMax s WHERE NomCategorie = ? AND NomClient = ?;";
 		int seuil = 0;
 		try {
 			PreparedStatement pstmt = connection().prepareStatement(sql);

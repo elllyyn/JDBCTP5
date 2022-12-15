@@ -15,12 +15,12 @@ public class CommandeDAO extends DAO{
 	 */
 	public static void creerCommande(Commande commande) {		
 		try {
-			String sql = "INSERT INTO Commande(NomCli) VALUES (?);";
+			String sql = "INSERT INTO Commande(NomClient) VALUES (?);";
 			PreparedStatement pstmt = connection().prepareStatement(sql);
 			pstmt.setString(1, commande.getClient().getNom());
 			pstmt.execute();
 			
-			sql = "SELECT IdCommande FROM Commande WHERE NomCli = ?";
+			sql = "SELECT IdCommande FROM Commande WHERE NomClient = ?";
 			pstmt = connection().prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			pstmt.setString(1, commande.getClient().getNom());
 			ResultSet rs = pstmt.executeQuery();
@@ -28,7 +28,7 @@ public class CommandeDAO extends DAO{
 			rs.previous();
 			commande.setId(rs.getInt("IdCommande"));
 			for(Entry<Materiel, Integer> m : commande.getMateriels().entrySet()) {
-				sql = "INSERT INTO ContenuCommande(IdCom,NomMat,quantCom) VALUES (?,?,?);";	
+				sql = "INSERT INTO ContenuCommande(IdCommande,NomMateriel,quantCom) VALUES (?,?,?);";	
 				pstmt = connection().prepareStatement(sql);
 				pstmt.setInt(1, commande.getId());
 				pstmt.setString(2, m.getKey().getNom());
@@ -41,7 +41,7 @@ public class CommandeDAO extends DAO{
 				if(quantCmd > quantStock) {
 					int substock = MagasinDAO.quantiteSubstitutionMateriel(commande.getClient().getMagasin().getNom(), m.getKey().getNom());
 					
-					sql = "UPDATE contenuMagasin SET quantStock = ? WHERE NomMat = ?;";
+					sql = "UPDATE contenuMagasin SET quantStock = ? WHERE NomMateriel = ?;";
 					pstmt = connection().prepareStatement(sql);
 					pstmt.setInt(1, substock - quantCmd + quantStock);
 					pstmt.setString(2, m.getKey().getSubstitution().getNom());
@@ -49,7 +49,7 @@ public class CommandeDAO extends DAO{
 					quantCmd = quantStock;
 				}
 					
-				sql = "UPDATE contenuMagasin SET quantStock = ? WHERE NomMat = ?;";
+				sql = "UPDATE contenuMagasin SET quantStock = ? WHERE NomMateriel = ?;";
 				pstmt = connection().prepareStatement(sql);
 				pstmt.setInt(1, quantStock - quantCmd);
 				pstmt.setString(2, m.getKey().getNom());

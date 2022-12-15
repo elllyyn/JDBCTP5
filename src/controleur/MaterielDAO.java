@@ -20,19 +20,19 @@ public class MaterielDAO extends DAO{
 	 */
 	public static Materiel materielexist(Materiel materiel, Magasin magasin) {
 		try {			
-			String sql = "SELECT m.NomMat, mat.NomCat, mat.MaterielSubstitution substitution, NomCom FROM ContenuMagasin m INNER JOIN ContenuMateriel c INNER JOIN Materiel mat ON(m.nomMat = c.nomMat AND mat.NomMateriel = m.nomMat AND m.NomMag= ? ) WHERE m.nomMat = ?;";
+			String sql = "SELECT m.NomMateriel, mat.NomCategorie, mat.MaterielSubstitution substitution, NomComposant FROM ContenuMagasin m INNER JOIN ContenuMateriel c INNER JOIN Materiel mat ON(m.nomMateriel = c.nomMateriel AND mat.NomMateriel = m.nomMateriel AND m.NomMagasin= ? ) WHERE m.nomMateriel = ?;";
 			PreparedStatement pstmt = connection().prepareStatement(sql);
 			pstmt.setString(1, magasin.getNom());
 			pstmt.setString(2, materiel.getNom());
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
-				materiel.setCategorie(new Categorie(rs.getString("mat.NomCat")));
+				materiel.setCategorie(new Categorie(rs.getString("mat.NomCategorie")));
 				materiel.setSubstitution(new Materiel(rs.getString("substitution"), null));
 				
 				ArrayList<Composant> composants = new ArrayList<>();
-				composants.add(new Composant(rs.getString("NomCom")));
+				composants.add(new Composant(rs.getString("NomComposant")));
 				while(rs.next()) {
-					composants.add(new Composant(rs.getString("NomCom")));
+					composants.add(new Composant(rs.getString("NomComposant")));
 				}
 				materiel.setComposants(composants);
 				
@@ -55,14 +55,14 @@ public class MaterielDAO extends DAO{
 		ArrayList<Materiel> materiels = new ArrayList<Materiel>();
 		
 		try {
-			String sql = "SELECT * FROM ContenuMateriel c INNER JOIN Materiel m ON (c.NomMat = m.NomMateriel) WHERE NomCom = ?;";
+			String sql = "SELECT * FROM ContenuMateriel c INNER JOIN Materiel m ON (c.NomMateriel = m.NomMateriel) WHERE NomComposant = ?;";
 			PreparedStatement pstmt;
 			pstmt = connection().prepareStatement(sql);
 			pstmt.setString(1, composant.getNom());
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				materiels.add(new Materiel(rs.getString("c.NomMat"), new Categorie(rs.getString("m.NomCat"))));
+				materiels.add(new Materiel(rs.getString("c.NomMateriel"), new Categorie(rs.getString("m.NomCategorie"))));
 
 			}
 			rs.close();

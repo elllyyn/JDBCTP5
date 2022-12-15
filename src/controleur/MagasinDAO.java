@@ -27,15 +27,15 @@ public class MagasinDAO extends DAO{
 		Map<Materiel, Integer> contenu = new HashMap<Materiel, Integer>();
 		
 		try {
-			String sql = "SELECT * FROM ContenuMagasin c INNER JOIN Materiel m ON (c.NomMat = m.NomMateriel) WHERE c.NomMag = ?;";
+			String sql = "SELECT * FROM ContenuMagasin c INNER JOIN Materiel m ON (c.NomMateriel = m.NomMateriel) WHERE c.NomMagasin = ?;";
 			PreparedStatement pstmt = connection().prepareStatement(sql);
 			pstmt.setString(1, NomMag);
 			List<Categorie> listCat = new ArrayList<Categorie>();
 			r1 = pstmt.executeQuery();
 			
 			while(r1.next()){
-				String NomMat = r1.getString("NomMat");
-				String NomCat = r1.getString("NomCat");
+				String NomMat = r1.getString("c.NomMateriel");
+				String NomCat = r1.getString("NomCategorie");
 				Categorie c = categorieDansListe(NomCat,listCat);
 				if(c==null) {
 					c = new Categorie(NomCat);
@@ -115,7 +115,7 @@ public class MagasinDAO extends DAO{
 		int nbMat = 0;
 		
 		try {
-			String sql = "SELECT * FROM ContenuMagasin WHERE NomMag = ? AND NomMat = ?;";
+			String sql = "SELECT * FROM ContenuMagasin WHERE NomMagasin = ? AND NomMateriel = ?;";
 			PreparedStatement pstmt = connection().prepareStatement(sql);
 			pstmt.setString(1, NomMag);
 			pstmt.setString(2, NomMat);
@@ -142,7 +142,7 @@ public class MagasinDAO extends DAO{
 		int nbMat = 0;
 		
 		try {
-			String sql = "SELECT MaterielSubstitution FROM ContenuMagasin c INNER JOIN Materiel m ON (c.NomMat = m.NomMateriel) WHERE NomMag = ? AND NomMat = ?;";
+			String sql = "SELECT MaterielSubstitution FROM ContenuMagasin c INNER JOIN Materiel m ON (c.NomMateriel = m.NomMateriel) WHERE NomMagasin = ? AND m.NomMateriel = ?;";
 			PreparedStatement pstmt = connection().prepareStatement(sql);
 			pstmt.setString(1, NomMag);
 			pstmt.setString(2, NomMat);
@@ -155,7 +155,7 @@ public class MagasinDAO extends DAO{
 			if(sub != null) {
 				
 				try {
-					sql = "SELECT quantStock FROM ContenuMagasin WHERE NomMag = ? AND NomMat = ?;";
+					sql = "SELECT quantStock FROM ContenuMagasin WHERE NomMagasin = ? AND NomMateriel = ?;";
 					pstmt = connection().prepareStatement(sql);
 					pstmt.setString(1, NomMag);
 					pstmt.setString(2, sub);
