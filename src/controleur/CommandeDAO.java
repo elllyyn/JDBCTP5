@@ -9,12 +9,11 @@ import modele.Commande;
 import modele.Materiel;
 
 public class CommandeDAO extends DAO{
-	public static void creerCommande(Commande commande) {
-		//insert Commande
-		//insert contenu commande
-		//Delete contenu magasin ou update
-		
-		
+	/**
+	 * creer une commande, insère dans contenuCommande et retire dans contenuMagasin
+	 * @param commande
+	 */
+	public static void creerCommande(Commande commande) {		
 		try {
 			String sql = "INSERT INTO Commande(NomCli) VALUES (?);";
 			PreparedStatement pstmt = connection().prepareStatement(sql);
@@ -62,13 +61,6 @@ public class CommandeDAO extends DAO{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
-		/*stmt.executeUpdate("INSERT INTO ContenuMagasin(NomMag,NomMat,quantStock) VALUES "
-				+"('LaChaiseLongue','Bougie',40),('LaChaiseLongue','Bougie2',10),('BricoDepot','Plaque',4),('LeRoyMerlin','Mousse',30);");
-		
-		stmt.executeUpdate("INSERT INTO ContenuCommande(IdCom,NomMat,quantCom) VALUES "
-				+"(1,'Plaque',3),(2,'Plaque',1),(3,'Bougie',10);");*/
 	}
 
 

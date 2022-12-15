@@ -11,7 +11,12 @@ import modele.Magasin;
 import modele.Materiel;
 
 public class ClientDAO extends DAO {
-
+	/**
+	 * retourne un client s'il existe dans la base de données 
+	 * l'objet magasin n'est pas rempli, juste son nom est inséré
+	 * @param client
+	 * @return client ou null
+	 */
 	public static Client clientexist(Client client) {
 		try {
 			java.sql.Statement stmt = connection().createStatement();
@@ -31,10 +36,16 @@ public class ClientDAO extends DAO {
 		}
 		return null;
 	}
-
+	/**
+	 * renvoi 0 si le seuilMax n'existe pas 
+	 * @param client
+	 * @param materiels
+	 * @param materiel
+	 * @return seuilMax
+	 */
 	public static int seuilMax(Client client, Map<Materiel,Integer> materiels, Materiel materiel) {
 		String sql = "SELECT seuil FROM seuilMax s WHERE NomCat = ? AND NomCli = ?;";
-		int seuil = -1;
+		int seuil = 0;
 		try {
 			PreparedStatement pstmt = connection().prepareStatement(sql);
 			pstmt.setString(1, materiel.getCategorie().getNom());

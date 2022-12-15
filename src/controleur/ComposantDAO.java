@@ -9,7 +9,11 @@ import modele.Composant;
 import modele.Magasin;
 
 public class ComposantDAO extends DAO{
-
+	/**
+	 * renvoi un composant s'il exist, sinon null
+	 * @param composant
+	 * @return composant
+	 */
 	public static Composant composantExist(Composant composant) {
 		try {
 			java.sql.Statement stmt = connection().createStatement();

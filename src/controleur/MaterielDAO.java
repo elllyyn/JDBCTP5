@@ -12,7 +12,12 @@ import modele.Magasin;
 import modele.Materiel;
 
 public class MaterielDAO extends DAO{
-
+	/**
+	 * renvoi le matériel s'il existe dans un magasin
+	 * @param materiel
+	 * @param magasin
+	 * @return
+	 */
 	public static Materiel materielexist(Materiel materiel, Magasin magasin) {
 		try {			
 			String sql = "SELECT m.NomMat, mat.NomCat, mat.MaterielSubstitution substitution, NomCom FROM ContenuMagasin m INNER JOIN ContenuMateriel c INNER JOIN Materiel mat ON(m.nomMat = c.nomMat AND mat.NomMateriel = m.nomMat AND m.NomMag= ? ) WHERE m.nomMat = ?;";
@@ -41,7 +46,11 @@ public class MaterielDAO extends DAO{
 		}
 		return null;
 	}
-	
+	/**
+	 * renvoi une liste de matériel avec un composant donné
+	 * @param composant
+	 * @return
+	 */
 	public static List<Materiel> materielAvecComposant(Composant composant){
 		ArrayList<Materiel> materiels = new ArrayList<Materiel>();
 		

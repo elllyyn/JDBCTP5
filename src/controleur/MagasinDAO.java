@@ -13,6 +13,11 @@ import modele.Categorie;
 import modele.Materiel;
 
 public class MagasinDAO extends DAO{
+	/**
+	 * renvoi le contenu d'un magasin
+	 * @param NomMag
+	 * @return
+	 */
 	public static Map<Materiel, Integer> contenu(String NomMag) {
 		
 		if(magasinExiste(NomMag)!=true) {
@@ -48,6 +53,12 @@ public class MagasinDAO extends DAO{
 		return contenu;
 		
 	}
+	/**
+	 * renvoi la catégorie s'il elle existe dans une liste
+	 * @param cat
+	 * @param listCat
+	 * @return
+	 */
 	public static Categorie categorieDansListe(String cat, List<Categorie> listCat) {	
 		for(Categorie c : listCat) {
 			if(c.getNom().equalsIgnoreCase(cat)) {
@@ -56,6 +67,12 @@ public class MagasinDAO extends DAO{
 		}
 		return null;
 	}
+	/**
+	 * renvoi le matériel s'il existe dans une Map
+	 * @param mat
+	 * @param contenu
+	 * @return
+	 */
 	public static Materiel materielDansMap(String mat,Map<Materiel, Integer> contenu) {
 		for(Entry<Materiel,Integer> e : contenu.entrySet()) {
 			if(e.getKey().getNom().equals(mat)) {
@@ -64,6 +81,11 @@ public class MagasinDAO extends DAO{
 		}
 		return null;
 	}
+	/**
+	 * renvoi true si le matériel existe, sinon false
+	 * @param magasin
+	 * @return
+	 */
 	public static boolean magasinExiste(String magasin) {
 		try {
 			java.sql.Statement stmt = connection().createStatement();
@@ -81,6 +103,12 @@ public class MagasinDAO extends DAO{
 		}
 		return false;
 	}
+	/**
+	 * renvoi la quantité de matériel disponible pour un matériel dans un magasin
+	 * @param NomMag
+	 * @param NomMat
+	 * @return
+	 */
 	public static int quantiteMaterielDansMagasin(String NomMag, String NomMat) {
 		
 		ResultSet r1 = null;
@@ -103,7 +131,12 @@ public class MagasinDAO extends DAO{
 		}
 		return nbMat;
 	}
-	
+	/**
+	 * renvoi la quantité disponible du matériel de substitution d'un matériel donné dans un magasin
+	 * @param NomMag
+	 * @param NomMat
+	 * @return
+	 */
 	public static int quantiteSubstitutionMateriel(String NomMag, String NomMat) {
 		ResultSet r1 = null;
 		int nbMat = 0;
