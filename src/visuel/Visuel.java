@@ -25,7 +25,9 @@ public class Visuel {
 	public static void main(String[] args) {
 		Visuel.choix();
 	}
-
+	/*
+	 * Affiche les actions, et appelle la fonction correspondant au choix de l'utilisateur
+	 */
 	public static void choix() {
 		sf = new Scanner(System.in);
 		System.out.println("Choisissez une action : " + '\n' 
@@ -55,7 +57,9 @@ public class Visuel {
 		sf.close();
 
 	}
-	
+	/*
+	 * Affiche le contenu d'un magasin à partir du nom du magasin donnée par l'utilisateur dans la console
+	 */
 	public static void afficherContenu() {
 		Map<Materiel, Integer>  contenuMagasin= null;
 		while(contenuMagasin == null) {
@@ -76,7 +80,9 @@ public class Visuel {
 			System.out.println(nbMat);
 		}
 	}
-	
+	/*
+	 * Creer la commande d'un client, l'enregistre
+	 */
 	public static void creerCmd() {
 		Client client = connexionClient();
 		client.getMagasin().setContenu(GestionMagasin.afficherContenuMagasin(client.getMagasin().getNom()));
@@ -86,7 +92,9 @@ public class Visuel {
 		Commande commande = new Commande(0, client, materiels);
 		GestionCommande.creerCmd(commande);
 	}
-	
+	/*
+	 * Effectue la commande du client, vérifie et met à jour la BdD
+	 */
 	public static Map<Materiel, Integer> faireCmd(Client client){
 		Boolean ajouter = true;
 		Map<Materiel, Integer> materiels = new HashMap<Materiel, Integer>();
@@ -137,7 +145,9 @@ public class Visuel {
 		}
 		return materiels;
 	}
-	
+	/*
+	 * Permet la connexion du client, vérifie aussi son existence
+	 */
 	public static Client connexionClient() {
 		Client client= null;
 		while(client == null) {
@@ -149,7 +159,9 @@ public class Visuel {
 		}
 		return client;
 	}
-	
+	/*
+	 * Permet au client de choisir un matériel pour sa commande
+	 */
 	public static Materiel choisirMat(Client client) {
 		Materiel materiel = null;
 		while(materiel == null) {
@@ -162,7 +174,9 @@ public class Visuel {
 		
 		return materiel;
 	}
-	
+	/*
+	 * Donne la quantité d'un matériel donné dans un magasin donné
+	 */
 	public static void quantiteMat() {
 		String NomMag = " ";
 		String NomMat = " ";
@@ -191,7 +205,9 @@ public class Visuel {
 		int nbMat = GestionMagasin.quantiteDansMagasin(NomMag, NomMat);
 		System.out.println("La quantité de ce materiel dans ce magasin est de "+nbMat);
 	}
-	
+	/*
+	 * Affiche la liste de composant d'un matériel donné
+	 */
 	public static void afficherMatAvecComposant() {
 		Composant composant = null;
 		while(composant == null) {
